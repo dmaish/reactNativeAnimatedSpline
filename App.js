@@ -68,9 +68,9 @@ cursor = React.createRef();
               </Defs>
                 <Path d={line} fill='transparent' stroke='#367be2' strokeWidth={3}/>
                 <Path d={`${line} L ${width} ${height} L 0 ${height} `} fill='url(#gradient)' />
-              <View ref={this.cursor } style={styles.cursor} />                      // cursor moving along the line spline
+              {/* <View ref={this.cursor } style={styles.cursor} />                      // cursor moving along the line spline */}
             </Svg>
-            {/* <Animated.ScrollView
+            <Animated.ScrollView
               style={StyleSheet.absoluteFillObject}
               contentContainerStyle={{width: lineLength * 2}}
               showsHorizontalScrollIndicator={false}
@@ -87,7 +87,7 @@ cursor = React.createRef();
               { useNativeDriver: true },
               )}
 
-              horizontal /> */}
+              horizontal />
         </View>
       </SafeAreaView>
     );
