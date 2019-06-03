@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { StyleSheet, View , SafeAreaView, Dimensions } from 'react-native';
+import { StyleSheet, View , SafeAreaView, Dimensions, Animated } from 'react-native';
 import { Svg } from 'expo';
 import * as path from 'svg-path-properties';
 import { scaleTime, scaleLinear } from 'd3-scale';
 import * as shape from 'd3-shape';
-import Animated from 'react-native-reanimated';
 
 const d3 = {
   shape,
@@ -38,19 +37,19 @@ const line = d3.shape.line()
   const lineLength = properties.getTotalLength();
 
 export default class App extends Component{
-cursor = React.createRef();  
+cursor = React.createRef();
 
   state = {
     x: new Animated.Value(0),
   };
 
   moveCursor(value) {
-    const {x, y} = properties.getPointAtLength(value);
-    this.cursor.current.setNativeProps({top: y, left: x})
+    const {x, y} = properties.getPointAtLength(lineLength - value);
+    this.cursor.current.setNativeProps({top: y - 10, left: x - 10})
   }
 
   componentDidMount(){
-    this.state.x.addListener( ({value} ) => this.moveCursor(value));
+    this.state.x.addListener( ({value}) => this.moveCursor(value));
     this.moveCursor(0);
   }
 
@@ -61,14 +60,14 @@ cursor = React.createRef();
         <View style={styles.container}>
             <Svg {...{ width, height }}>
               <Defs>
-                <LinearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <Stop  stopColor='#a8c4ed' offset='0' />
-                  <Stop  stopColor='#ffffff' offset='100' />
+                <LinearGradient id="gradient" x1="0%" y1="0%" x2="20%" y2="100%">
+                  <Stop  stopColor='#a8c4ed' offset='0%' />
+                  <Stop  stopColor='#ffffff' offset='100%' />
                 </LinearGradient>
               </Defs>
                 <Path d={line} fill='transparent' stroke='#367be2' strokeWidth={3}/>
                 <Path d={`${line} L ${width} ${height} L 0 ${height} `} fill='url(#gradient)' />
-              {/* <View ref={this.cursor } style={styles.cursor} />                      // cursor moving along the line spline */}
+              <View ref={this.cursor } style={styles.cursor} />       
             </Svg>
             <Animated.ScrollView
               style={StyleSheet.absoluteFillObject}
